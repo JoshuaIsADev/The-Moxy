@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledMenu = styled.div`
   display: flex;
@@ -57,6 +57,6 @@ const StyledButton = styled.button`
     width: 1.6rem;
     height: 1.6rem;
     color: var(--color-grey-400);
-    transition: all 0.3s;
+    transition: all 0.2s;
   }
 `;

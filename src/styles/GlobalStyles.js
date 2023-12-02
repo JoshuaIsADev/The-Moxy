@@ -2,28 +2,28 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
 :root {
-  /* Indigo */
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-200: #c7d2fe;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
-  --color-brand-800: #3730a3;
-  --color-brand-900: #312e81;
+  /* Sand */
+  --color-brand-50: #EDE9E4;
+  --color-brand-100: #f4c7a0;
+  --color-brand-200: #f1bf92;
+  --color-brand-500: #efb784;
+  --color-brand-600: #EDAF76;
+  --color-brand-700: #ce9866;
+  --color-brand-800: #b08156;
+  --color-brand-900: #936b47;
 
   /* Grey */
   --color-grey-0: #fff;
-  --color-grey-50: #f9fafb;
-  --color-grey-100: #f3f4f6;
-  --color-grey-200: #e5e7eb;
-  --color-grey-300: #d1d5db;
-  --color-grey-400: #9ca3af;
-  --color-grey-500: #6b7280;
-  --color-grey-600: #4b5563;
-  --color-grey-700: #374151;
-  --color-grey-800: #1f2937;
-  --color-grey-900: #111827;
+  --color-grey-50: #EDE9E4;
+  --color-grey-100: #d5d5d5;
+  --color-grey-200: #c1c1c1;
+  --color-grey-300: #adadad;
+  --color-grey-400: #999999;
+  --color-grey-500: #868686;
+  --color-grey-600: #616161;
+  --color-grey-700: #3F3F3F;
+  --color-grey-800: #2c2c2c;
+  --color-grey-900: #1b1b1b;
 
   --color-blue-100: #e0f2fe;
   --color-blue-700: #0369a1;
@@ -72,7 +72,7 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   color: var(--color-grey-700);
 
   transition: color 0.3s, background-color 0.3s;

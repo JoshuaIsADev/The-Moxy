@@ -1,23 +1,35 @@
-import styled from "styled-components";
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+import {
+  HiOutlineCalendarDays,
+  HiOutlineCog6Tooth,
+  HiOutlineHome,
+  HiOutlineHomeModern,
+  HiOutlineUsers,
+} from 'react-icons/hi2';
 
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0rem;
+
+  &:last-child {
+    border-bottom: 1px solid var(--color-grey-300);
+  }
 `;
 
-const Link = styled.a`
+const StyledNavLink = styled(NavLink)`
   &:link,
   &:visited {
     display: flex;
     align-items: center;
     gap: 1.2rem;
-
-    color: var(--color-grey-600);
+    border-top: 1px solid var(--color-grey-300);
+    color: var(--color-grey-700);
     font-size: 1.6rem;
     font-weight: 500;
-    padding: 1.2rem 2.4rem;
-    transition: all 0.3s;
+    padding: 2.2rem 2.4rem;
+    transition: all 0.2s;
   }
 
   /* This works because react-router places the active class on the active NavLink */
@@ -26,15 +38,15 @@ const Link = styled.a`
   &.active:link,
   &.active:visited {
     color: var(--color-grey-800);
-    background-color: var(--color-grey-50);
-    border-radius: var(--border-radius-sm);
+    background-color: var(--color-grey-0);
+    border-radius: none;
   }
 
   & svg {
     width: 2.4rem;
     height: 2.4rem;
     color: var(--color-grey-400);
-    transition: all 0.3s;
+    transition: all 0.2s;
   }
 
   &:hover svg,
@@ -44,3 +56,44 @@ const Link = styled.a`
     color: var(--color-brand-600);
   }
 `;
+
+function MainNav() {
+  return (
+    <nav>
+      <NavList>
+        <li>
+          <StyledNavLink to='/dashboard'>
+            <HiOutlineHome />
+            <span>Home</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to='/rooms'>
+            <HiOutlineHomeModern />
+            <span>Rooms</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to='/users'>
+            <HiOutlineUsers />
+            <span>Users</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to='/bookings'>
+            <HiOutlineCalendarDays />
+            <span>Bookings</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to='/settings'>
+            <HiOutlineCog6Tooth />
+            <span>Settings</span>
+          </StyledNavLink>
+        </li>
+      </NavList>
+    </nav>
+  );
+}
+
+export default MainNav;
