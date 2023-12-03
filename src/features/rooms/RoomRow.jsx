@@ -10,7 +10,7 @@ const TableRow = styled.div`
   grid-template-columns: 1.4fr 1.8fr 2.2fr 1fr 1fr 1fr;
   column-gap: 2.4rem;
   align-items: center;
-  padding: 0rem 2rem 0rem 0rem;
+  padding: 1rem;
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
@@ -20,7 +20,7 @@ const TableRow = styled.div`
 const Img = styled.img`
   display: block;
   height: 10rem;
-  /* width: 6.4rem; */
+  width: 15rem;
   aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
