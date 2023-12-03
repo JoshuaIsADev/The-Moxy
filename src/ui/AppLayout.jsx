@@ -1,11 +1,17 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import Header from './Header';
+import Header, { HeaderCustomer } from './Header';
 import styled from 'styled-components';
 
 const StyledAppLayout = styled.div`
   display: grid;
   grid-template-columns: 26rem 1fr;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+`;
+const StyledAppLayoutCustomer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
   height: 100vh;
 `;
@@ -23,6 +29,14 @@ const Container = styled.div`
   gap: 3.2rem;
 `;
 
+const ContainerCustomer = styled.div`
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+`;
+
 function AppLayout() {
   return (
     <StyledAppLayout>
@@ -34,6 +48,19 @@ function AppLayout() {
         </Container>
       </Main>
     </StyledAppLayout>
+  );
+}
+
+export function AppLayoutCustomer() {
+  return (
+    <StyledAppLayoutCustomer>
+      <HeaderCustomer />
+      <Main>
+        <ContainerCustomer>
+          <Outlet />
+        </ContainerCustomer>
+      </Main>
+    </StyledAppLayoutCustomer>
   );
 }
 

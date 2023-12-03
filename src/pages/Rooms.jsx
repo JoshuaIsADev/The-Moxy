@@ -4,6 +4,10 @@ import RoomTable from '../features/rooms/RoomTable';
 import { useState } from 'react';
 import CreateRoomForm from '../features/rooms/CreateRoomForm';
 import Button from '../ui/Button';
+import Gallery from '../ui/gallery';
+import { useQuery } from '@tanstack/react-query';
+import { getRooms } from '../services/apiRooms';
+import Spinner from '../ui/Spinner';
 
 function Rooms() {
   const [showForm, setShowForm] = useState(false);
@@ -20,6 +24,27 @@ function Rooms() {
         </Button>
         {showForm && <CreateRoomForm />}
       </Row>
+    </>
+  );
+}
+
+export function RoomsCustomer() {
+  const {
+    isLoading,
+    data: rooms,
+    // error,
+  } = useQuery({
+    queryKey: ['rooms'],
+    queryFn: getRooms,
+  });
+
+  if (isLoading) return <Spinner />;
+  return (
+    <>
+      <div>test22</div>
+      {rooms.map((room) => (
+        <Gallery room={room} key={room.id} />
+      ))}
     </>
   );
 }

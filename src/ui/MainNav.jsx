@@ -18,6 +18,12 @@ const NavList = styled.ul`
   }
 `;
 
+const NavListCustomer = styled.ul`
+  display: flex;
+  flex-direction: row;
+  gap: 5rem;
+`;
+
 const StyledNavLink = styled(NavLink)`
   &:link,
   &:visited {
@@ -32,7 +38,6 @@ const StyledNavLink = styled(NavLink)`
     transition: all 0.2s;
   }
 
-  /* This works because react-router places the active class on the active NavLink */
   &:hover,
   &:active,
   &.active:link,
@@ -54,6 +59,27 @@ const StyledNavLink = styled(NavLink)`
   &.active:link svg,
   &.active:visited svg {
     color: var(--color-brand-600);
+  }
+`;
+const StyledNavLinkCustomer = styled(NavLink)`
+  &:link,
+  &:visited {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    color: var(--color-grey-700);
+    font-size: 1.6rem;
+    font-weight: 500;
+    /* padding: 2.2rem 2.4rem; */
+    transition: all 0.2s;
+  }
+
+  &:hover,
+  &:active,
+  &.active:link,
+  &.active:visited {
+    border-bottom: 1px solid var(--color-grey-300);
+    margin-bottom: -2rem;
   }
 `;
 
@@ -92,6 +118,26 @@ function MainNav() {
           </StyledNavLink>
         </li>
       </NavList>
+    </nav>
+  );
+}
+
+export function MainNavCustomer() {
+  return (
+    <nav>
+      <NavListCustomer>
+        <li>
+          <StyledNavLinkCustomer to='/hotel'>The Hotel</StyledNavLinkCustomer>
+        </li>
+        <li>
+          <StyledNavLinkCustomer to='/rooms'>Bedrooms</StyledNavLinkCustomer>
+        </li>
+        <li>
+          <StyledNavLinkCustomer to='/restaurantbars'>
+            Restaurants & Bars
+          </StyledNavLinkCustomer>
+        </li>
+      </NavListCustomer>
     </nav>
   );
 }
