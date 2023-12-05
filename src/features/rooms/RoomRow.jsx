@@ -4,6 +4,8 @@ import { deleteRoom } from '../../services/apiRooms';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import Button from '../../ui/Button';
+import { useState } from 'react';
+import CreateRoomForm from './CreateRoomForm';
 
 const TableRow = styled.div`
   display: grid;
@@ -43,6 +45,7 @@ const Discount = styled.div`
 `;
 
 function RoomRow(room) {
+  const [showForm, setShowForm] = useState(false);
   const {
     id: roomId,
     name,
@@ -66,20 +69,26 @@ function RoomRow(room) {
   });
 
   return (
-    <TableRow role='row'>
-      <Img src={image} />
-      <Room>{name}</Room>
-      <div>Fits up to {maxCapacity} guests</div>
-      <Price>{formatCurrency(regularPrice)}</Price>
-      <Discount>{formatCurrency(discount)}</Discount>
-      <Button
-        $variation='secondary'
-        onClick={() => mutate(roomId)}
-        disabled={isDeleting}
-      >
-        Delete
-      </Button>
-    </TableRow>
+    <>
+      <TableRow role='row'>
+        <Img src={image} />
+        <Room>{name}</Room>
+        <div>Fits up to {maxCapacity} guests</div>
+        <Price>{formatCurrency(regularPrice)}</Price>
+        <Discount>{formatCurrency(discount)}</Discount>
+        <div>
+          <Button onClick={() => setShowForm((show) => !show)}>Edit</Button>
+          <Button
+            $variation='secondary'
+            onClick={() => mutate(roomId)}
+            disabled={isDeleting}
+          >
+            Delete
+          </Button>
+        </div>
+      </TableRow>
+      {showForm && <CreateRoomForm />}
+    </>
   );
 }
 
