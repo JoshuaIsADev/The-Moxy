@@ -1,7 +1,12 @@
 function Gallery(room) {
-  const { name } = room.room;
+  const { name, image } = room.room;
 
-  return <div>{name}</div>;
+  return (
+    <div>
+      {name}
+      <img src={image}></img>
+    </div>
+  );
 }
 
 export default Gallery;
