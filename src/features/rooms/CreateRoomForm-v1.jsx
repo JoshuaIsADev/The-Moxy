@@ -11,14 +11,8 @@ import FormRow from '../../ui/FormRow';
 import { useForm } from 'react-hook-form';
 import { createRoom } from '../../services/apiRooms';
 
-function CreateRoomForm({ roomToEdit = {} }) {
-  const { id: editId, ...editValues } = roomToEdit;
-  const isEditSession = Boolean(editId);
-
-  const { register, handleSubmit, reset, getValues, formState } = useForm({
-    defaultValues: isEditSession ? editValues : {},
-    values: isEditSession ? editValues : {},
-  });
+function CreateRoomForm() {
+  const { register, handleSubmit, reset, getValues, formState } = useForm();
 
   const { errors } = formState;
 
@@ -131,9 +125,7 @@ function CreateRoomForm({ roomToEdit = {} }) {
         <Button $variation='secondary' type='reset'>
           Cancel
         </Button>
-        <Button disabled={isCreating}>
-          {isEditSession ? 'Edit room' : 'Create new Room'}
-        </Button>
+        <Button disabled={isCreating}>Add Room</Button>
       </FormRow>
     </Form>
   );
