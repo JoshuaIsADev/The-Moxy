@@ -5,6 +5,7 @@ import Button from '../../ui/Button';
 import CreateRoomForm from './CreateRoomForm';
 import { useDeleteRoom } from './useDeleteRoom';
 import { formatCurrency } from '../../utils/helpers';
+import { useCreateRoom } from './useCreateRoom';
 
 const TableRow = styled.div`
   display: grid;
@@ -52,8 +53,28 @@ const Discount = styled.div`
 function RoomRow({ room }) {
   const [showForm, setShowForm] = useState(false);
   const { isDeleting, deleteRoom } = useDeleteRoom();
+  const { isCreating, createRoom } = useCreateRoom();
 
-  const { id: roomId, name, maxCapacity, regularPrice, discount, image } = room;
+  const {
+    id: roomId,
+    name,
+    maxCapacity,
+    regularPrice,
+    discount,
+    image,
+    description,
+  } = room;
+
+  function handleDuplicate() {
+    createRoom({
+      name: `Copy of ${name}`,
+      maxCapacity,
+      regularPrice,
+      discount,
+      image,
+      description,
+    });
+  }
 
   return (
     <>
@@ -68,7 +89,9 @@ function RoomRow({ room }) {
           <span>&mdash;</span>
         )}
         <Test>
-          <Button>Duplicate</Button>
+          <Button onClick={handleDuplicate} disabled={isCreating}>
+            Duplicate
+          </Button>
           <Button onClick={() => setShowForm((show) => !show)}>Edit</Button>
           <Button
             $variation='secondary'
