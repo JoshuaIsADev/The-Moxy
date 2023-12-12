@@ -1,5 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
 
 import Input from '../../ui/Input';
 import Form from '../../ui/Form';
@@ -8,10 +7,13 @@ import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
 
-import { useForm } from 'react-hook-form';
-import { createRoom } from '../../services/apiRooms';
+import { useCreateRoom } from './useCreateRoom';
+import { useEditRoom } from './useEditRoom';
 
 function CreateRoomForm({ roomToEdit = {} }) {
+  const { isCreating, createRoom } = useCreateRoom();
+  const { isEditing, editRoom } = useEditRoom();
+
   const { id: editId, ...editValues } = roomToEdit;
   const isEditSession = Boolean(editId);
 
@@ -22,20 +24,25 @@ function CreateRoomForm({ roomToEdit = {} }) {
 
   const { errors } = formState;
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading: isCreating } = useMutation({
-    mutationFn: createRoom,
-    onSuccess: () => {
-      toast.success('New room successfully created');
-      queryClient.invalidateQueries({ queryKey: ['rooms'] });
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  const isWorking = isCreating || isEditing;
 
   function onSubmit(data) {
-    mutate({ ...data, image: data.image[0] });
+    const image = typeof data.image === 'string' ? data.image : data.image[0];
+
+    if (isEditSession)
+      editRoom(
+        { newRoomData: { ...data, image }, id: editId },
+        {
+          onSuccess: (data) => reset(),
+        }
+      );
+    else
+      createRoom(
+        { ...data, image: image },
+        {
+          onSuccess: (data) => reset(),
+        }
+      );
   }
 
   function onError(errors) {
@@ -48,7 +55,7 @@ function CreateRoomForm({ roomToEdit = {} }) {
         <Input
           type='text'
           id='name'
-          disabled={isCreating}
+          disabled={isWorking}
           {...register('name', {
             required: 'This field is required',
           })}
@@ -59,7 +66,7 @@ function CreateRoomForm({ roomToEdit = {} }) {
         <Input
           type='number'
           id='maxCapacity'
-          disabled={isCreating}
+          disabled={isWorking}
           {...register('maxCapacity', {
             required: 'This field is required',
             min: {
@@ -74,7 +81,7 @@ function CreateRoomForm({ roomToEdit = {} }) {
         <Input
           type='number'
           id='regularPrice'
-          disabled={isCreating}
+          disabled={isWorking}
           {...register('regularPrice', {
             required: 'This field is required',
             min: {
@@ -90,7 +97,7 @@ function CreateRoomForm({ roomToEdit = {} }) {
           type='number'
           id='discount'
           defaultValue={0}
-          disabled={isCreating}
+          disabled={isWorking}
           {...register('discount', {
             required: 'This field is required',
             validate: (value) =>
@@ -108,20 +115,20 @@ function CreateRoomForm({ roomToEdit = {} }) {
           type='number'
           id='description'
           defaultValue=''
-          disabled={isCreating}
+          disabled={isWorking}
           {...register('description', {
             required: 'This field is required',
           })}
         />
       </FormRow>
 
-      <FormRow label='Cabin photo'>
+      <FormRow label='Room photo'>
         <FileInput
           id='image'
           accept='image/*'
-          type='file'
+          // type='file'
           {...register('image', {
-            required: 'This field is required',
+            required: isEditSession ? false : 'This field is required',
           })}
         />
       </FormRow>
@@ -131,7 +138,7 @@ function CreateRoomForm({ roomToEdit = {} }) {
         <Button $variation='secondary' type='reset'>
           Cancel
         </Button>
-        <Button disabled={isCreating}>
+        <Button disabled={isWorking}>
           {isEditSession ? 'Edit room' : 'Create new Room'}
         </Button>
       </FormRow>

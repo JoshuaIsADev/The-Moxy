@@ -1,15 +1,14 @@
 import styled from 'styled-components';
-import { formatCurrency } from '../../utils/helpers';
-import { deleteRoom } from '../../services/apiRooms';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
-import Button from '../../ui/Button';
 import { useState } from 'react';
+
+import Button from '../../ui/Button';
 import CreateRoomForm from './CreateRoomForm';
+import { useDeleteRoom } from './useDeleteRoom';
+import { formatCurrency } from '../../utils/helpers';
 
 const TableRow = styled.div`
   display: grid;
-  grid-template-columns: 1.4fr 0.8fr 1.6fr 1fr 0.6fr 0.8fr;
+  grid-template-columns: 1.4fr 0.8fr 1.6fr 1fr 0.6fr 1.6fr;
   column-gap: 1.5rem;
   align-items: center;
   justify-items: left;
@@ -52,20 +51,9 @@ const Discount = styled.div`
 
 function RoomRow({ room }) {
   const [showForm, setShowForm] = useState(false);
+  const { isDeleting, deleteRoom } = useDeleteRoom();
+
   const { id: roomId, name, maxCapacity, regularPrice, discount, image } = room;
-
-  const queryClient = useQueryClient();
-
-  const { isLoading: isDeleting, mutate } = useMutation({
-    mutationFn: deleteRoom,
-    onSuccess: () => {
-      toast.success('Cabin succesfully deleted');
-      queryClient.invalidateQueries({
-        queryKey: ['rooms'],
-      });
-    },
-    onError: (err) => toast.error(err.message),
-  });
 
   return (
     <>
@@ -74,8 +62,13 @@ function RoomRow({ room }) {
         <Room>{name}</Room>
         <div>Fits up to {maxCapacity} guests</div>
         <Price>{formatCurrency(regularPrice)}</Price>
-        <Discount>{formatCurrency(discount)}</Discount>
+        {discount ? (
+          <Discount>{formatCurrency(discount)}</Discount>
+        ) : (
+          <span>&mdash;</span>
+        )}
         <Test>
+          <Button>Duplicate</Button>
           <Button onClick={() => setShowForm((show) => !show)}>Edit</Button>
           <Button
             $variation='secondary'

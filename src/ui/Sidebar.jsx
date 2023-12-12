@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Logo from './Logo';
 import MainNav from './MainNav';
+import { useRooms } from '../features/rooms/useRooms';
 
 const StyledSidebar = styled.aside`
   background-color: var(--color-grey-50);
@@ -14,6 +15,8 @@ const StyledSidebar = styled.aside`
 `;
 
 function Sidebar() {
+  const { isLoading, rooms } = useRooms();
+
   return (
     <StyledSidebar>
       <Logo />

@@ -3,7 +3,6 @@ import { getRooms } from '../../services/apiRooms';
 import Spinner from '../../ui/Spinner';
 import styled from 'styled-components';
 import RoomRow from './RoomRow';
-import { useRooms } from './useRooms';
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -29,7 +28,14 @@ const TableHeader = styled.header`
 `;
 
 function RoomTable() {
-  const { isLoading, rooms } = useRooms();
+  const {
+    isLoading,
+    data: rooms,
+    // error,
+  } = useQuery({
+    queryKey: ['rooms'],
+    queryFn: getRooms,
+  });
 
   if (isLoading) return <Spinner />;
 

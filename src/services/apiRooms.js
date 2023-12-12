@@ -11,31 +11,41 @@ export async function getRooms() {
   return data;
 }
 
-export async function createRoom(newRoom) {
+export async function createEditRoom(newRoom, id) {
+  const hasImagePath = newRoom.image?.startsWith?.(supabaseUrl);
+
   const imageName = `${Math.random()}-${newRoom.image.name}`.replaceAll(
     '/',
     ''
   );
+  const imagePath = hasImagePath
+    ? newRoom.image
+    : `${supabaseUrl}/storage/v1/object/public/room-images/${imageName}`;
 
-  const imagePath = `${supabaseUrl}/storage/v1/object/public/room-images/${imageName}`;
+  //1. CREATE/EDIT ROOM
+  let query = supabase.from('rooms');
 
-  //1. Create room
-  const { data, error } = await supabase
-    .from('rooms')
-    .insert([{ ...newRoom, image: imagePath }])
-    .select();
+  //A) CREATE
+  if (!id) query = query.insert([{ ...newRoom, image: imagePath }]);
+
+  //B) EDIT
+  if (id) query = query.update({ ...newRoom, image: imagePath }).eq('id', id);
+
+  const { data, error } = await query.select().single();
 
   if (error) {
     console.log(error);
     throw new Error('Room could not be created');
   }
-  // 2.upload image
+
+  // 2.UPLOAD IMAGE
+  if (hasImagePath) return data;
 
   const { error: storageError } = await supabase.storage
     .from('room-images')
     .upload(imageName, newRoom.image);
 
-  //3. Delet room if there was an error if uploading image
+  //3. DELETE ROOM IF THERE WAS AN ERROR IF UPLOADING AN IMAGE
   if (storageError) {
     await supabase.from('rooms').delete().eq('id', data.id);
     console.log(storageError);
@@ -49,6 +59,7 @@ export async function createRoom(newRoom) {
 
 export async function deleteRoom(id) {
   const { data, error } = await supabase.from('rooms').delete().eq('id', id);
+
   if (error) {
     console.log(error);
     throw new Error('Room could not be deleted');
